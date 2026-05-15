@@ -12,7 +12,7 @@ coverage/
 # Firebase / Google Cloud secret keys
 backend/serviceAccountKey.json
 serviceAccountKey.json
-*.json
+
 
 # Environment variables
 .env
