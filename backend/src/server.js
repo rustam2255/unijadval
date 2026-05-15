@@ -1,0 +1,11 @@
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import crud from './routes/crud.js';
+import optimizer from './routes/optimizer.js';
+dotenv.config();
+const app=express();
+app.use(cors()); app.use(express.json({limit:'2mb'}));
+app.get('/health',(req,res)=>res.json({ok:true,service:'UniJadval backend'}));
+app.use('/api',crud); app.use('/api/optimizer',optimizer);
+const port=process.env.PORT||5000; app.listen(port,()=>console.log(`Backend http://localhost:${port}`));

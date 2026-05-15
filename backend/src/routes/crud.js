@@ -1,0 +1,10 @@
+import { Router } from 'express';
+import { db } from '../services/firebaseAdmin.js';
+const router=Router();
+const allowed=['faculties','departments','groups','teachers','subjects','rooms','buildings','lessons','workloads'];
+router.use('/:collection',(req,res,next)=>{if(!allowed.includes(req.params.collection)) return res.status(400).json({error:'Collection ruxsat etilmagan'}); next();});
+router.get('/:collection',async(req,res)=>{const snap=await db.collection(req.params.collection).get(); res.json(snap.docs.map(d=>({id:d.id,...d.data()})));});
+router.post('/:collection',async(req,res)=>{const ref=await db.collection(req.params.collection).add({...req.body,createdAt:new Date(),updatedAt:new Date()}); res.json({id:ref.id});});
+router.patch('/:collection/:id',async(req,res)=>{await db.collection(req.params.collection).doc(req.params.id).update({...req.body,updatedAt:new Date()}); res.json({ok:true});});
+router.delete('/:collection/:id',async(req,res)=>{await db.collection(req.params.collection).doc(req.params.id).delete(); res.json({ok:true});});
+export default router;
